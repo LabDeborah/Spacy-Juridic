@@ -8,27 +8,30 @@ nlp = spacy.blank("pt")
 
 
 def get_dataset(path: str) -> list:
-    files = [join(path, f) for f in listdir("./dataset") if isfile(join(path, f))]
+    files = [join(path, f) for f in listdir(path) if isfile(join(path, f)) and f != ".DS_Store"]
     spacy_data = []
 
     # Opening JSON file
     for file in files:
-        with open(file) as json_file:
-            data = json.load(json_file)
+        try:
+            with open(file) as json_file:
+                data = json.load(json_file)
 
-            # Convert everything to spacy dataset format
-            # e.g. ("Tokyo Tower is 333m tall.", [(0, 11, "BUILDING"), (15, 18, "HEIGHT")]),
-            # In the end we should have a list of items like this example above, each one
-            # representing one JSON file
+                # Convert everything to spacy dataset format
+                # e.g. ("Tokyo Tower is 333m tall.", [(0, 11, "BUILDING"), (15, 18, "HEIGHT")]),
+                # In the end we should have a list of items like this example above, each one
+                # representing one JSON file
 
-            # Found items
-            # e.g. [(0, 11, "BUILDING"), (15, 18, "HEIGHT")]
-            spacy_data_items = []
+                # Found items
+                # e.g. [(0, 11, "BUILDING"), (15, 18, "HEIGHT")]
+                spacy_data_items = []
 
-            for item in data["items"]:
-                spacy_data_items.append((item["start"], item["end"], item["type"]))
+                for item in data["items"]:
+                    spacy_data_items.append((item["start"], item["end"], item["type"]))
 
-            spacy_data.append((data["source"], spacy_data_items))
+                spacy_data.append((data["source"], spacy_data_items))
+        except:
+            print(f"There was an error while trying to read {file}")
 
     return spacy_data
 

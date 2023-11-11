@@ -1,2 +1,4 @@
 *.spacy
 /output
+dataset*/
+.DS_Store
