@@ -8,7 +8,11 @@ nlp = spacy.blank("pt")
 
 
 def get_dataset(path: str) -> list:
-    files = [join(path, f) for f in listdir(path) if isfile(join(path, f)) and f != ".DS_Store"]
+    files = [
+        join(path, f)
+        for f in listdir(path)
+        if isfile(join(path, f)) and f != ".DS_Store"
+    ]
     spacy_data = []
 
     # Opening JSON file
